@@ -360,8 +360,6 @@ if (isset($_GET['ajax_search'])) {
     </select>
 </div>
 
-
-
                         <div class="mb-3">
                             <label for="movie_duration" class="form-label">Duration (in minutes)</label>
                             <input type="number" class="form-control" name="movie_duration" value="<?= $movie['duration']; ?>" required>
@@ -403,9 +401,6 @@ if (isset($_GET['ajax_search'])) {
     <ul id="searchResults"></ul>
 </div>
 </div>
-
-
-
 <!-- Body Card Start here -->
 </div> 
         <div class="card-body">
@@ -475,10 +470,6 @@ if (isset($_GET['ajax_search'])) {
             </div>
         </div>
     </div>
-
-
-    
-
     <!-- Add Movie Modal -->
     <div class="modal fade" id="addMovieModal" tabindex="-1" aria-labelledby="addMovieModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -512,9 +503,7 @@ if (isset($_GET['ajax_search'])) {
         <option value="Thriller">Thriller</option>
     </select>
 </div>
-
-
-                        
+ 
                         <div class="mb-3">
                             <label for="movie_duration" class="form-label">Duration</label>
                             <input type="number" class="form-control" name="movie_duration" required>
