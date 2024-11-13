@@ -406,7 +406,7 @@ if (isset($_GET['ajax_search'])) {
 
 
 
-
+<!-- Body Card Start here -->
 </div> 
         <div class="card-body">
             <table class="table table-striped table-responsive table-sm">
@@ -447,7 +447,7 @@ if (isset($_GET['ajax_search'])) {
             </table>
         </div>
     </div>
-
+<!-- body card end here -->
       <!-- Cart Modal -->
       <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
