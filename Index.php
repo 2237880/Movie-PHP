@@ -56,7 +56,6 @@ if (isset($_POST['register'])) {
     $conn->query("INSERT INTO users (email, password) VALUES ('$email', '$password')");
 }
 
-
 // Handle adding a new movie
 if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     $name = $conn->real_escape_string($_POST['movie_name']);
@@ -92,6 +91,7 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     }
 }
 
+
 //Edit Movie
 if (isset($_GET['edit'])) {
     $id = $conn->real_escape_string($_GET['edit']);
@@ -103,7 +103,6 @@ if (isset($_GET['edit'])) {
         $movie = null;
     }
 }
-
 
 //Update Movie
 if (isset($_POST['update_movie'])) {
@@ -137,6 +136,34 @@ if (isset($_POST['update_movie'])) {
     }
 }
 
+
+//Delete Function
+if (isset($_GET['delete'])) {
+    $id = $conn->real_escape_string($_GET['delete']);
+
+    // First, fetch the image filename from the database
+    $result = $conn->query("SELECT image FROM movies WHERE id='$id'");
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $imageFile = $row['image'];
+
+        // Delete the movie entry from the database
+        if ($conn->query("DELETE FROM movies WHERE id='$id'")) {
+            // If the database delete is successful, attempt to delete the image file
+            $filePath = "images/" . $imageFile;
+            if (file_exists($filePath)) {
+                if (!unlink($filePath)) {
+                    // Log error or inform the user if the file deletion failed
+                    echo "<script>alert('Error deleting the image file.');</script>";
+                }
+            }
+        } else {
+            echo "<script>alert('Error deleting record from database.');</script>";
+        }
+    } else {
+        echo "<script>alert('Movie not found.');</script>";
+    }
+}
 
 
 
@@ -181,7 +208,6 @@ if (isset($_GET['ajax_search'])) {
     echo json_encode($search_results);
     exit;  // Important to stop further script execution
 }
-
 
 
 
@@ -293,8 +319,6 @@ if (isset($_GET['ajax_search'])) {
             </div>
         </div>
     </div>
-
-
     <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -360,7 +384,7 @@ if (isset($_GET['ajax_search'])) {
     <div class="modal-backdrop fade show"></div>
     <?php endif; ?>
 
-
+<!-- GitHub Commited -->
 
     <!-- Movies Listing and CRUD -->
     <div class="card m-1">
@@ -422,8 +446,6 @@ if (isset($_GET['ajax_search'])) {
             </table>
         </div>
     </div>
-
-
 
       <!-- Cart Modal -->
       <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
