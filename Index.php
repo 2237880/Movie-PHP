@@ -136,3 +136,48 @@ if (isset($_POST['update_movie'])) {
         echo "<script>alert('Error updating movie: " . $conn->error . "');</script>";
     }
 }
+
+
+
+
+//Add to Cart
+
+// Handling the addition to cart
+if (isset($_GET['add_to_cart'])) {
+    $movie_id = $conn->real_escape_string($_GET['add_to_cart']);
+    // Check if cart already exists
+    if (isset($_COOKIE['cart'])) {
+        $cart = json_decode($_COOKIE['cart'], true);
+    } else {
+        $cart = [];
+    }
+    // Add to cart
+    if (!in_array($movie_id, $cart)) {
+        $cart[] = $movie_id;
+        setcookie('cart', json_encode($cart), time() + 86400); // Expires in 1 day
+        echo "<script>alert('Movie added to cart');</script>";
+    }
+}
+
+
+//Search
+// Fetch movies based on the search query
+if (isset($_GET['search'])) {
+    $search = $conn->real_escape_string($_GET['search']);
+    $movies = $conn->query("SELECT * FROM movies WHERE name LIKE '%$search%' OR synopsis LIKE '%$search%'");
+} else {
+    $movies = $conn->query("SELECT * FROM movies");
+}
+
+//Ajax Search
+
+if (isset($_GET['ajax_search'])) {
+    $search = $conn->real_escape_string($_GET['ajax_search']);
+    $result = $conn->query("SELECT * FROM movies WHERE name LIKE '%$search%' OR synopsis LIKE '%$search%' LIMIT 10");
+    $search_results = [];
+    while ($row = $result->fetch_assoc()) {
+        $search_results[] = $row['name'];  // You can adjust the details you want to send back
+    }
+    echo json_encode($search_results);
+    exit;  // Important to stop further script execution
+}
