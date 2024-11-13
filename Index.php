@@ -422,3 +422,136 @@ if (isset($_GET['ajax_search'])) {
             </table>
         </div>
     </div>
+
+
+
+      <!-- Cart Modal -->
+      <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if (isset($_COOKIE['cart'])) {
+                        $cart = json_decode($_COOKIE['cart'], true);
+                        foreach ($cart as $id) {
+                            $result = $conn->query("SELECT name FROM movies WHERE id='$id'");
+                            if ($movie = $result->fetch_assoc()) {
+                                echo "<p>" . htmlspecialchars($movie['name']) . "</p>";
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="purchase()">Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <!-- Add Movie Modal -->
+    <div class="modal fade" id="addMovieModal" tabindex="-1" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addMovieModalLabel">Add Movie</h1>
+                    <button type of="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="movie_name" class="form-label">Movie Name</label>
+                            <input type="text" class="form-control" name="movie_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_synopsis" class="form-label">Synopsis</label>
+                            <textarea class="form-control" name="movie_synopsis" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_duration" class="form-label">Duration</label>
+                            <input type="number" class="form-control" name="movie_duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_image" class="form-label">Movie Image</label>
+                            <input type="file" class="form-control" name="movie_image" required>
+                        </div>
+                        <button type="submit" name="add_movie" class="btn btn-success">Add Movie</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+<script>
+document.getElementById('closeModalButton').addEventListener('click', function() {
+    var modal = document.getElementById('editMovieModal');
+    modal.style.display = 'none'; // Hide the modal
+    var backdrop = document.querySelector('.modal-backdrop'); // Remove the backdrop
+    if (backdrop) {
+        backdrop.style.display = 'none';
+    }
+});
+
+
+function purchase() {
+    alert('Purchase successful!');
+    // // Optionally clear cart after purchase
+    // document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // window.location.reload(); // Reload to update the UI
+
+
+    document.cookie.split(';').forEach(cookie => {
+        const eqPos = cookie.indexOf('=');
+        const name = 'cart'
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    });
+}
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#searchInput').on('keyup', function() {
+        var query = $(this).val();
+        if (query.length > 1) {
+            $.ajax({
+                url: 'index.php',
+                method: 'GET',
+                data: {ajax_search: query},
+                success: function(data) {
+                    let results = JSON.parse(data);
+                    $('#searchResults').empty();  // Clear previous results
+                    $.each(results, function(index, value) {
+                        // Create list items as links
+                        $('#searchResults').append($('<li>').text(value).on('click', function() {
+                            $('#searchInput').val($(this).text());  // Fill the search box with the clicked value
+                            $('#searchResults').empty();  // Optionally clear the list
+                        }));
+                    });
+                }
+            });
+        } else {
+            $('#searchResults').empty();  // Clear results if less than 2 characters
+        }
+    });
+});
+
+</script>
+
+
+
+</body>
+</html>
+
+
