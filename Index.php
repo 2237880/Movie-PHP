@@ -22,3 +22,21 @@ $conn = new mysqli($host, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+// Handle login
+if (isset($_POST['login'])) {
+    $email = $conn->real_escape_string($_POST['InputEmail']);
+    $password = $conn->real_escape_string($_POST['InputPassword']);
+    $result = $conn->query("SELECT * FROM users WHERE email='$email'");
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_email'] = $user['email'];
+        } else {
+            echo "<script>alert('Invalid credentials');</script>";
+        }
+    } else {
+        echo "<script>alert('No user found');</script>";
+    }
+}
