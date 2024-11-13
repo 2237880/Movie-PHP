@@ -183,7 +183,7 @@ if (isset($_GET['ajax_search'])) {
 
 // Fetch all movies
 // $movies = $conn->query("SELECT * FROM movies");
-
+//HTML starts Here
 ?>
 <!DOCTYPE html>
 <html lang="en">
