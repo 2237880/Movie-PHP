@@ -103,3 +103,36 @@ if (isset($_GET['edit'])) {
         $movie = null;
     }
 }
+
+
+//Update Movie
+if (isset($_POST['update_movie'])) {
+    $id = $conn->real_escape_string($_POST['movie_id']);
+    $name = $conn->real_escape_string($_POST['movie_name']);
+    $synopsis = $conn->real_escape_string($_POST['movie_synopsis']);
+    $duration = $conn->real_escape_string($_POST['movie_duration']);
+    
+    $movieToUpdate = $conn->query("SELECT * FROM movies WHERE id='$id'")->fetch_assoc();
+    $oldImage = $movieToUpdate['image'];
+    
+    if ($_FILES['movie_image']['error'] == UPLOAD_ERR_OK) {
+        $image = $_FILES['movie_image']['name'];
+        $target_file = "images/" . basename($image);
+        if (move_uploaded_file($_FILES['movie_image']['tmp_name'], $target_file)) {
+            if ($oldImage && file_exists("images/$oldImage")) {
+                unlink("images/$oldImage"); // Delete the old image
+            }
+        } else {
+            $image = $oldImage; // If no new file, keep old file name
+        }
+    } else {
+        $image = $oldImage; // If no new file, keep old file name
+    }
+
+    $sql = "UPDATE movies SET name='$name', synopsis='$synopsis', duration='$duration', image='$image' WHERE id='$id'";
+    if ($conn->query($sql)) {
+        echo "<script>alert('Movie updated successfully');</script>";
+    } else {
+        echo "<script>alert('Error updating movie: " . $conn->error . "');</script>";
+    }
+}
