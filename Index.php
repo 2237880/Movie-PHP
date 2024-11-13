@@ -195,7 +195,7 @@ if (isset($_GET['ajax_search'])) {
 
     <style>
         .btn-link {
-    color: inherit; /* Inherits text color from the button */
+    color: inherit;
     text-decoration: none; /* Removes underline */
     display: inline-block; /* Ensures the link covers the button area if needed */
     width: 100%; /* Makes the link fill the button */
@@ -228,10 +228,7 @@ if (isset($_GET['ajax_search'])) {
     max-width: 300px; /* Set a max-width to control column width */
     word-wrap: break-word; /* Allows the text to wrap to the next line */
 }
-
-
-
-    </style>
+</style>
 
     <!-- style ends here -->
 </head>
