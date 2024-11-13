@@ -293,3 +293,69 @@ if (isset($_GET['ajax_search'])) {
             </div>
         </div>
     </div>
+
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="registerModalLabel">Register</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post">
+                        <div class="mb-3">
+                            <label for="InputSignupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="InputSignupEmail" aria-describedby="emailHelp" required>
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputSignupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="InputSignupPassword" required>
+                        </div>
+                        <button type="submit" name="register" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Movie Form -->
+    <?php if (isset($movie)): ?>
+    <div class="modal fade show" id="editMovieModal" style="display: block;" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Movie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModalButton"></button>
+
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="movie_id" value="<?= htmlspecialchars($movie['id']); ?>">
+                        <div class="mb-3">
+                            <label for="movie_name" class="form-label">Movie Name</label>
+                            <input type="text" class="form-control" name="movie_name" value="<?= htmlspecialchars($movie['name']); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_synopsis" class="form-label">Synopsis</label>
+                            <textarea class="form-control" name="movie_synopsis" required><?= htmlspecialchars($movie['synopsis']); ?></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_duration" class="form-label">Duration (in minutes)</label>
+                            <input type="number" class="form-control" name="movie_duration" value="<?= $movie['duration']; ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_image" class="form-label">Movie Image</label>
+                            <input type="file" class="form-control" name="movie_image">
+                            Current: <img src="images/<?= htmlspecialchars($movie['image']); ?>" style="width: 100px;">
+                        </div>
+                        <button type="submit" name="update_movie" class="btn btn-primary">Update Movie</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+    <?php endif; ?>
