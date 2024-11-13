@@ -178,8 +178,6 @@ if (isset($_GET['ajax_search'])) {
     echo json_encode($search_results);
     exit;  // Important to stop further script execution
 }
-
-
 //HTML starts Here
 ?>
 <!DOCTYPE html>
