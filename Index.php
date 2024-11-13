@@ -548,11 +548,6 @@ document.getElementById('closeModalButton').addEventListener('click', function()
 //Cart COOKIE
 function purchase() {
     alert('Purchase successful!');
-    // // Optionally clear cart after purchase
-    // document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // window.location.reload(); // Reload to update the UI
-
-
     document.cookie.split(';').forEach(cookie => {
         const eqPos = cookie.indexOf('=');
         const name = 'cart'
