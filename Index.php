@@ -40,3 +40,11 @@ if (isset($_POST['login'])) {
         echo "<script>alert('No user found');</script>";
     }
 }
+
+// Handle logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    unset($_SESSION['user_id']);
+    header('Location: index.php');
+    exit;
+}
