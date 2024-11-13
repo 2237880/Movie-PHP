@@ -232,6 +232,8 @@ if (isset($_GET['ajax_search'])) {
 
 
     </style>
+
+    <!-- style ends here -->
 </head>
 <body>
 <div class="container">
