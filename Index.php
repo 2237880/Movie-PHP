@@ -324,7 +324,7 @@ if (isset($_GET['ajax_search'])) {
         </div>
     </div>
 
-    <!-- Edit Movie Form -->
+    <!-- Edit Movie Form starts here-->
     <?php if (isset($movie)): ?>
     <div class="modal fade show" id="editMovieModal" style="display: block;" aria-modal="true" role="dialog">
         <div class="modal-dialog">
@@ -379,7 +379,7 @@ if (isset($_GET['ajax_search'])) {
     </div>
     <div class="modal-backdrop fade show"></div>
     <?php endif; ?>
-
+<!-- MOvie Drop down ends here -->
 <!-- GitHub Commited -->
 
     <!-- Movies Listing and CRUD -->
