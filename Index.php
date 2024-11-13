@@ -5,7 +5,7 @@ include 'dbMovie.php';
 include 'Auth.php';
 
 
-// Handle adding a new movie
+// Handle adding a new movie Function
 if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     $name = $conn->real_escape_string($_POST['movie_name']);
     $synopsis = $conn->real_escape_string($_POST['movie_synopsis']);
@@ -16,7 +16,7 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     $target_file = $target_dir . basename($image);
     $tmp_file = $_FILES['movie_image']['tmp_name'];
 
-    // Check if image file is an actual image or fake image
+    // Check if image file is an actual image or fake image Function
     $check = getimagesize($tmp_file);
     if ($check !== false) {
         echo "File is an image - " . $check["mime"] . ".";
@@ -49,7 +49,7 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
 }
 
 
-//Edit Movie
+//Edit Movie FUnctions
 if (isset($_GET['edit'])) {
     $id = $conn->real_escape_string($_GET['edit']);
     $result = $conn->query("SELECT * FROM movies WHERE id='$id'");
