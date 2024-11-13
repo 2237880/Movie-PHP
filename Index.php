@@ -181,3 +181,115 @@ if (isset($_GET['ajax_search'])) {
     echo json_encode($search_results);
     exit;  // Important to stop further script execution
 }
+
+
+
+
+// Fetch all movies
+// $movies = $conn->query("SELECT * FROM movies");
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My movies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <style>
+        .btn-link {
+    color: inherit; /* Inherits text color from the button */
+    text-decoration: none; /* Removes underline */
+    display: inline-block; /* Ensures the link covers the button area if needed */
+    width: 100%; /* Makes the link fill the button */
+    height: 100%;
+    line-height: inherit; /* Adjusts line height to match the button */
+}
+
+.btn-link:hover, .btn-link:focus {
+    text-decoration: none; /* Ensures no underline on hover/focus */
+    color: inherit; /* Optional: ensures the color doesn't change on hover/focus */
+}
+
+.search-dropdown ul {
+    background: white;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding-left: 0;
+    position: absolute;
+    width: -100px;
+}
+.search-dropdown li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.search-dropdown li:hover {
+    background-color: #afc2e0;
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">MovieFlix</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                       
+
+                        <li class="nav-item">
+                        <button type="button" class="btn btn-success">
+    <a href="index.php" class="btn-link">Home</a>
+</button>
+                    </li>
+                        
+                    </li>
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Sign up</button>
+                    </li>
+                    <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?logout">Logout</a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post">
+                        <div class="mb-3">
+                            <label for="InputEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="InputEmail" aria-describedby="emailHelp" required>
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="InputPassword" required>
+                        </div>
+                        <button type="submit" name="login" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
