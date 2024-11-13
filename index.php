@@ -208,3 +208,56 @@ $movies = $conn->query("SELECT * FROM movies");
             </div>
         </div>
     </nav>
+
+
+    
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post">
+                        <div class="mb-3">
+                            <label for="InputEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="InputEmail" aria-describedby="emailHelp" required>
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="InputPassword" required>
+                        </div>
+                        <button type="submit" name="login" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="registerModalLabel">Register</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post">
+                        <div class="mb-3">
+                            <label for="InputSignupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="InputSignupEmail" aria-describedby="emailHelp" required>
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputSignupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="InputSignupPassword" required>
+                        </div>
+                        <button type="submit" name="register" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
