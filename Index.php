@@ -55,3 +55,39 @@ if (isset($_POST['register'])) {
     $password = password_hash($conn->real_escape_string($_POST['InputSignupPassword']), PASSWORD_DEFAULT);
     $conn->query("INSERT INTO users (email, password) VALUES ('$email', '$password')");
 }
+
+
+// Handle adding a new movie
+if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
+    $name = $conn->real_escape_string($_POST['movie_name']);
+    $synopsis = $conn->real_escape_string($_POST['movie_synopsis']);
+    $duration = $conn->real_escape_string($_POST['movie_duration']);
+    $image = $_FILES['movie_image']['name'];
+    $target_dir = "images/";
+    $target_file = $target_dir . basename($image);
+    $tmp_file = $_FILES['movie_image']['tmp_name'];
+
+    // Check if image file is an actual image or fake image
+    $check = getimagesize($tmp_file);
+    if ($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        // Check if file already exists
+        if (!file_exists($target_file)) {
+            if (move_uploaded_file($tmp_file, $target_file)) {
+                echo "The file " . htmlspecialchars(basename($image)) . " has been uploaded.";
+                $sql = "INSERT INTO movies (name, synopsis, duration, image) VALUES ('$name', '$synopsis', '$duration', '$image')";
+                if ($conn->query($sql) === TRUE) {
+                    echo "New record created successfully";
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        } else {
+            echo "Sorry, file already exists.";
+        }
+    } else {
+        echo "File is not an image.";
+    }
+}
