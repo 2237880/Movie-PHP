@@ -6,9 +6,10 @@ error_reporting(E_ALL);
 
 session_start();
 $host = 'localhost'; // Database host
-$username = 'root'; // Database username
-$password = ''; // Database password
-$database = 'Moviesdb'; // Database name
+$username = 'db2237880'; // Database username
+$password = 'qwerty12@@'; // Database password
+$database = 'db2237880'; // Database name
+
 
 // $server = "localhost";
 // $username = "db2237880";
