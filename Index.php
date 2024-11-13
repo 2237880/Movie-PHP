@@ -208,7 +208,7 @@ if (isset($_GET['ajax_search'])) {
     color: inherit; /* Optional: ensures the color doesn't change on hover/focus */
 }
 
-.search-dropdown ul {
+.search-dropdown ul {   /*search dropdown */
     background: white;
     border: 1px solid #ccc;
     list-style: none;
