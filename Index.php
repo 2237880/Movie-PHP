@@ -20,7 +20,7 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     $check = getimagesize($tmp_file);
     if ($check !== false) {
         echo "File is an image - " . $check["mime"] . ".";
-        // Check if file already exists
+        // Check if file already exists in target file
         if (!file_exists($target_file)) {
             if (move_uploaded_file($tmp_file, $target_file)) {
                 echo "The file " . htmlspecialchars(basename($image)) . " has been uploaded.";
@@ -43,7 +43,7 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     }
        
         header("Location: index.php");  // Redirect to home or another appropriate page
-        exit;  // Stop script execution after redirect
+        exit;  // Stop script execution after redirect to login
 
     
 }
