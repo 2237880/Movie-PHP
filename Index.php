@@ -48,3 +48,10 @@ if (isset($_GET['logout'])) {
     header('Location: index.php');
     exit;
 }
+
+// Handle registration
+if (isset($_POST['register'])) {
+    $email = $conn->real_escape_string($_POST['InputSignupEmail']);
+    $password = password_hash($conn->real_escape_string($_POST['InputSignupPassword']), PASSWORD_DEFAULT);
+    $conn->query("INSERT INTO users (email, password) VALUES ('$email', '$password')");
+}
