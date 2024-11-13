@@ -91,3 +91,15 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
         echo "File is not an image.";
     }
 }
+
+//Edit Movie
+if (isset($_GET['edit'])) {
+    $id = $conn->real_escape_string($_GET['edit']);
+    $result = $conn->query("SELECT * FROM movies WHERE id='$id'");
+    if ($result->num_rows > 0) {
+        $movie = $result->fetch_assoc();
+    } else {
+        echo "<script>alert('Movie not found');</script>";
+        $movie = null;
+    }
+}
