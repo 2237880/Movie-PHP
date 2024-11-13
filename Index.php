@@ -180,9 +180,6 @@ if (isset($_GET['ajax_search'])) {
 }
 
 
-
-// Fetch all movies
-// $movies = $conn->query("SELECT * FROM movies");
 //HTML starts Here
 ?>
 <!DOCTYPE html>
@@ -200,9 +197,8 @@ if (isset($_GET['ajax_search'])) {
     display: inline-block; /* Ensures the link covers the button area if needed */
     width: 100%; /* Makes the link fill the button */
     height: 100%;
-    line-height: inherit; /* Adjusts line height to match the button */
+    line-height: inherit; 
 }
-
 .btn-link:hover, .btn-link:focus {
     text-decoration: none; /* Ensures no underline on hover/focus */
     color: inherit; /* Optional: ensures the color doesn't change on hover/focus */
