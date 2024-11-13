@@ -567,6 +567,7 @@ function purchase() {
 <!-- AAAAJJJJAAAAAAXXXXXXX -->
 <script>
 //AJAX CODE
+//ajax code starts here
 $(document).ready(function() {
     $('#searchInput').on('keyup', function() {
         var query = $(this).val();
