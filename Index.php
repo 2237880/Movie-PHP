@@ -359,3 +359,66 @@ if (isset($_GET['ajax_search'])) {
     </div>
     <div class="modal-backdrop fade show"></div>
     <?php endif; ?>
+
+
+
+    <!-- Movies Listing and CRUD -->
+    <div class="card m-1">
+    <div class="card-header d-flex justify-content-between align-items-center">
+    <span>List of Films</span>
+    <?php if (isset($_SESSION['user_id'])): ?>
+    <div>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMovieModal">Add Movie</button>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cartModal">View Cart</button>
+    </div>
+
+
+    <?php endif; ?>
+    <div>
+    <form class="d-inline-flex ms-2" action="index.php" method="get">
+        <input class="form-control me-2" type="search" placeholder="Search movies" name="search" id="searchInput" aria-label="Search" required>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <div class="search-dropdown">
+    <ul id="searchResults"></ul>
+</div>
+</div>
+
+
+
+
+</div> 
+        <div class="card-body">
+            <table class="table table-striped table-responsive table-sm">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Movie Name</th>
+                        <th>Synopsis</th>
+                        <th>Duration</th>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <th>Actions</th>
+                        <?php endif; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($movie = $movies->fetch_assoc()): ?>
+                    <tr>
+                        <td><img style="width: 100px; height: auto;" src="images/<?= htmlspecialchars($movie['image']); ?>" alt="<?= htmlspecialchars($movie['name']); ?>"></td>
+                        <td><?= htmlspecialchars($movie['name']); ?></td>
+                        <td><?= htmlspecialchars($movie['synopsis']); ?></td>
+                        <td><?= htmlspecialchars($movie['duration']); ?> min</td>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <td>
+                            <a href="?add_to_cart=<?= $movie['id']; ?>" class="btn btn-success">Add to Cart</a>
+                            <a href="?edit=<?= $movie['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="?delete=<?= $movie['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+
+                        </td>
+                        <?php endif; ?>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
