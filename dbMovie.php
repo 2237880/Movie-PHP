@@ -5,10 +5,18 @@ error_reporting(E_ALL);
 
 
 session_start();
+// $host = 'mi-linux.wlv.ac.uk'; // Database host
+// $username = '2237880'; // Database username
+// $password = 'Qwerty1234@@'; // Database password
+// $database = 'db2237880'; // Database name
+
+
+
 $host = 'localhost'; // Database host
-$username = 'db2237880'; // Database username
-$password = 'qwerty12@@'; // Database password
-$database = 'db2237880'; // Database name
+$username = 'root'; // Database username
+$password = ''; // Database password
+$database = 'Moviesdb'; // Database name
+
 
 
 // $server = "localhost";

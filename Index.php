@@ -9,6 +9,7 @@ include 'Auth.php';
 if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     $name = $conn->real_escape_string($_POST['movie_name']);
     $synopsis = $conn->real_escape_string($_POST['movie_synopsis']);
+    $genre = $conn->real_escape_string($_POST['movie_genre']);
     $duration = $conn->real_escape_string($_POST['movie_duration']);
     $image = $_FILES['movie_image']['name'];
     $target_dir = "images/";
@@ -23,7 +24,9 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
         if (!file_exists($target_file)) {
             if (move_uploaded_file($tmp_file, $target_file)) {
                 echo "The file " . htmlspecialchars(basename($image)) . " has been uploaded.";
-                $sql = "INSERT INTO movies (name, synopsis, duration, image) VALUES ('$name', '$synopsis', '$duration', '$image')";
+
+                $sql = "INSERT INTO movies (name, synopsis, duration, image, genre) VALUES ('$name', '$synopsis', '$duration', '$image', '$genre')";
+
                 if ($conn->query($sql) === TRUE) {
                     echo "New record created successfully";
                 } else {
@@ -38,6 +41,11 @@ if (isset($_POST['add_movie']) && isset($_FILES['movie_image'])) {
     } else {
         echo "File is not an image.";
     }
+       
+        header("Location: index.php");  // Redirect to home or another appropriate page
+        exit;  // Stop script execution after redirect
+
+    
 }
 
 
@@ -59,6 +67,7 @@ if (isset($_POST['update_movie'])) {
     $name = $conn->real_escape_string($_POST['movie_name']);
     $synopsis = $conn->real_escape_string($_POST['movie_synopsis']);
     $duration = $conn->real_escape_string($_POST['movie_duration']);
+    $genre = $conn->real_escape_string($_POST['movie_genre']);
     
     $movieToUpdate = $conn->query("SELECT * FROM movies WHERE id='$id'")->fetch_assoc();
     $oldImage = $movieToUpdate['image'];
@@ -77,9 +86,13 @@ if (isset($_POST['update_movie'])) {
         $image = $oldImage; // If no new file, keep old file name
     }
 
-    $sql = "UPDATE movies SET name='$name', synopsis='$synopsis', duration='$duration', image='$image' WHERE id='$id'";
+    $sql = "UPDATE movies SET name='$name', synopsis='$synopsis', duration='$duration', image='$image', genre='$genre' WHERE id='$id'";
+
+
     if ($conn->query($sql)) {
         echo "<script>alert('Movie updated successfully');</script>";
+        header("Location: index.php");  // Redirect to home or another appropriate page
+        exit;  // Stop script execution after redirect
     } else {
         echo "<script>alert('Error updating movie: " . $conn->error . "');</script>";
     }
@@ -110,8 +123,11 @@ if (isset($_GET['delete'])) {
             echo "<script>alert('Error deleting record from database.');</script>";
         }
     } else {
-        echo "<script>alert('Movie not found.');</script>";
+        echo "<script>alert('Movie not found Search Again.');</script>";
     }
+
+    header("Location: index.php");  
+    exit;
 }
 
 
@@ -132,7 +148,12 @@ if (isset($_GET['add_to_cart'])) {
         $cart[] = $movie_id;
         setcookie('cart', json_encode($cart), time() + 86400); // Expires in 1 day
         echo "<script>alert('Movie added to cart');</script>";
+        header("Location: index.php");  
+        exit;
     }
+
+    // header("Location: index.php");  
+    // exit;
 }
 
 
@@ -202,6 +223,13 @@ if (isset($_GET['ajax_search'])) {
 .search-dropdown li:hover {
     background-color: #afc2e0;
 }
+
+.synopsis {
+    max-width: 300px; /* Set a max-width to control column width */
+    word-wrap: break-word; /* Allows the text to wrap to the next line */
+}
+
+
 
     </style>
 </head>
@@ -315,6 +343,23 @@ if (isset($_GET['ajax_search'])) {
                             <label for="movie_synopsis" class="form-label">Synopsis</label>
                             <textarea class="form-control" name="movie_synopsis" required><?= htmlspecialchars($movie['synopsis']); ?></textarea>
                         </div>
+
+                        <div class="mb-3">
+    <label for="movie_genre" class="form-label">Genre</label>
+    <select class="form-control" name="movie_genre" required>
+        <option value="">Select a Genre</option>
+        <option value="Action" <?= $movie['genre'] == 'Action' ? 'selected' : '' ?>>Action</option>
+        <option value="Comedy" <?= $movie['genre'] == 'Comedy' ? 'selected' : '' ?>>Comedy</option>
+        <option value="Drama" <?= $movie['genre'] == 'Drama' ? 'selected' : '' ?>>Drama</option>
+        <option value="Fantasy" <?= $movie['genre'] == 'Fantasy' ? 'selected' : '' ?>>Fantasy</option>
+        <option value="Horror" <?= $movie['genre'] == 'Horror' ? 'selected' : '' ?>>Horror</option>
+        <option value="Romance" <?= $movie['genre'] == 'Romance' ? 'selected' : '' ?>>Romance</option>
+        <option value="Thriller" <?= $movie['genre'] == 'Thriller' ? 'selected' : '' ?>>Thriller</option>
+    </select>
+</div>
+
+
+
                         <div class="mb-3">
                             <label for="movie_duration" class="form-label">Duration (in minutes)</label>
                             <input type="number" class="form-control" name="movie_duration" value="<?= $movie['duration']; ?>" required>
@@ -368,6 +413,8 @@ if (isset($_GET['ajax_search'])) {
                         <th>Image</th>
                         <th>Movie Name</th>
                         <th>Synopsis</th>
+                        <th>Genre</th>
+
                         <th>Duration</th>
                         <?php if (isset($_SESSION['user_id'])): ?>
                         <th>Actions</th>
@@ -377,9 +424,12 @@ if (isset($_GET['ajax_search'])) {
                 <tbody>
                     <?php while ($movie = $movies->fetch_assoc()): ?>
                     <tr>
-                        <td><img style="width: 100px; height: auto;" src="images/<?= htmlspecialchars($movie['image']); ?>" alt="<?= htmlspecialchars($movie['name']); ?>"></td>
+                        <td><img style="width: 200px; height: auto;" src="images/<?= htmlspecialchars($movie['image']); ?>" alt="<?= htmlspecialchars($movie['name']); ?>"></td>
                         <td><?= htmlspecialchars($movie['name']); ?></td>
-                        <td><?= htmlspecialchars($movie['synopsis']); ?></td>
+                        <td><div class="synopsis"><?= htmlspecialchars($movie['synopsis']); ?></div></td>
+
+                        <td><?= htmlspecialchars($movie['genre']); ?></td>
+
                         <td><?= htmlspecialchars($movie['duration']); ?> min</td>
                         <?php if (isset($_SESSION['user_id'])): ?>
                         <td>
@@ -445,6 +495,24 @@ if (isset($_GET['ajax_search'])) {
                             <label for="movie_synopsis" class="form-label">Synopsis</label>
                             <textarea class="form-control" name="movie_synopsis" required></textarea>
                         </div>
+                        
+
+                        <div class="mb-3">
+    <label for="movie_genre" class="form-label">Genre</label>
+    <select class="form-control" name="movie_genre" required>
+        <option value="">Select a Genre</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Horror">Horror</option>
+        <option value="Romance">Romance</option>
+        <option value="Thriller">Thriller</option>
+    </select>
+</div>
+
+
+                        
                         <div class="mb-3">
                             <label for="movie_duration" class="form-label">Duration</label>
                             <input type="number" class="form-control" name="movie_duration" required>
@@ -465,6 +533,7 @@ if (isset($_GET['ajax_search'])) {
 
 
 <script>
+    //This is for Close Button Popup
 document.getElementById('closeModalButton').addEventListener('click', function() {
     var modal = document.getElementById('editMovieModal');
     modal.style.display = 'none'; // Hide the modal
@@ -474,7 +543,7 @@ document.getElementById('closeModalButton').addEventListener('click', function()
     }
 });
 
-
+//Cart COOKIE
 function purchase() {
     alert('Purchase successful!');
     // // Optionally clear cart after purchase
@@ -491,7 +560,11 @@ function purchase() {
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<!-- AAAAJJJJAAAAAAXXXXXXX -->
 <script>
+//AJAX CODE
 $(document).ready(function() {
     $('#searchInput').on('keyup', function() {
         var query = $(this).val();
@@ -519,9 +592,6 @@ $(document).ready(function() {
 });
 
 </script>
-
-
-
 </body>
 </html>
 
