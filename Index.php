@@ -120,7 +120,7 @@ if (isset($_GET['delete'])) {
                 }
             }
         } else {
-            echo "<script>alert('Error deleting record from database.');</script>";
+            echo "<script>alert('Error deleting record from Movie database.');</script>";
         }
     } else {
         echo "<script>alert('Movie not found Search Again.');</script>";
