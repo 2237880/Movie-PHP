@@ -61,7 +61,7 @@ if (isset($_GET['edit'])) {
     }
 }
 
-//Update Movie
+//Update Movie Function
 if (isset($_POST['update_movie'])) {
     $id = $conn->real_escape_string($_POST['movie_id']);
     $name = $conn->real_escape_string($_POST['movie_name']);
@@ -94,7 +94,7 @@ if (isset($_POST['update_movie'])) {
         header("Location: index.php");  // Redirect to home or another appropriate page
         exit;  // Stop script execution after redirect
     } else {
-        echo "<script>alert('Error updating movie: " . $conn->error . "');</script>";
+        echo "<script>alert('Error Updating Movie: " . $conn->error . "');</script>";
     }
 }
 
